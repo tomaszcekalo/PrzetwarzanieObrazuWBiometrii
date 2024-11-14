@@ -1,0 +1,14 @@
+﻿<Window x:Class="PrzetwarzanieObrazuWBiometrii.Tresholding"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PrzetwarzanieObrazuWBiometrii"
+        mc:Ignorable="d"
+        Title="Tresholding" Height="450" Width="800">
+    <Grid>
+        <Slider IsSnapToTickEnabled="True"  x:Name="mySlider" HorizontalAlignment="Left" Margin="10,48,0,0" VerticalAlignment="Top" Width="120" Maximum="255" SmallChange="1" AutoToolTipPlacement="TopLeft" AutoToolTipPrecision="0" />
+        <Label Content="{Binding ElementName=mySlider, Path=Value, StringFormat=F0}" HorizontalAlignment="Left" Margin="130,44,0,0" VerticalAlignment="Top" Width="47"/>
+        <Button Content="Confirm" HorizontalAlignment="Left" Margin="10,71,0,0" VerticalAlignment="Top" Width="60" Click="Button_Click"/>
+    </Grid>
+</Window>

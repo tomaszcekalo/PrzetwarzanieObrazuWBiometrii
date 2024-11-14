@@ -1,0 +1,25 @@
+﻿<Window x:Class="PrzetwarzanieObrazuWBiometrii.NiblackSauvolaPhansalkar"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PrzetwarzanieObrazuWBiometrii"
+        mc:Ignorable="d"
+        Title="NiblackSauvolaPhansalkar" Height="450" Width="800">
+    <Grid>
+        <Label  Content="Boundary Radius" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="144"/>
+        <Slider  AutoToolTipPlacement="TopLeft" AutoToolTipPrecision="0" Name="boundarySlider" HorizontalAlignment="Center" Margin="0,41,0,0" VerticalAlignment="Top" Width="780" Minimum="1" Maximum="16"/>
+        <Label  Content="k - bias" HorizontalAlignment="Left" Margin="10,64,0,0" VerticalAlignment="Top" Width="120"/>
+        <Slider   Name="biasSlider" IsSnapToTickEnabled="True" AutoToolTipPrecision="1" AutoToolTipPlacement="TopLeft" HorizontalAlignment="Center" Margin="0,95,0,0" VerticalAlignment="Top" Width="780" Minimum="-1" Maximum="1" LargeChange="0.05" SmallChange="0.05" TickFrequency="0.05"/>
+        <Button Content="Niblack" HorizontalAlignment="Left" Margin="10,118,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
+        <Label Content="R - DynamicRange" HorizontalAlignment="Left" Margin="10,147,0,0" VerticalAlignment="Top"/>
+        <Slider Name="DynamicRange" IsSnapToTickEnabled="True" AutoToolTipPrecision="1" AutoToolTipPlacement="TopLeft" HorizontalAlignment="Center" Margin="0,178,0,0" VerticalAlignment="Top" Width="780" Maximum="256" Minimum="0.1" SmallChange="0.1" Value="128" TickFrequency="0.1" LargeChange="0.1"/>
+        <Button Content="Sauvola" HorizontalAlignment="Left" Margin="10,201,0,0" VerticalAlignment="Top" Width="76" Click="Button_Click_1" />
+        <Label Content="p - Magnitude" HorizontalAlignment="Left" Margin="10,232,0,0" VerticalAlignment="Top"/>
+        <Slider Name="Magnitude" AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True" AutoToolTipPrecision="1"  HorizontalAlignment="Center" Margin="0,263,0,0" VerticalAlignment="Top" Width="780" LargeChange="0.1" TickFrequency="0.1" Value="3"/>
+        <Label Content="q" HorizontalAlignment="Left" Margin="10,286,0,0" VerticalAlignment="Top"/>
+        <Slider x:Name="Q" AutoToolTipPlacement="TopLeft" AutoToolTipPrecision="1" HorizontalAlignment="Left" Margin="19,317,0,0" VerticalAlignment="Top" Width="771"/>
+        <Button Content="Phansalkar" HorizontalAlignment="Left" Margin="19,340,0,0" VerticalAlignment="Top" Click="Button_Click_2"/>
+
+    </Grid>
+</Window>
