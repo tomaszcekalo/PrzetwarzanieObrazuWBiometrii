@@ -32,6 +32,11 @@
         <Image Name="SkeletonizationImage" HorizontalAlignment="Left" Height="350" Margin="882,36,0,0" VerticalAlignment="Top" Width="350"/>
         <Button Name="ZhangSuenButton" Content="Zhang-Suen " HorizontalAlignment="Left" Margin="492,10,0,0" VerticalAlignment="Top" Click="ZhangSuenButton_Click"/>
         <Button Content="SzkielA" HorizontalAlignment="Left" Margin="1211,5,0,0" VerticalAlignment="Top" Width="60" Click="Button_Click_5"/>
+        <Button Content="Wypełnij" HorizontalAlignment="Left" Height="20" Margin="569,10,0,0" VerticalAlignment="Top" Width="55" Click="Button_Wypełnij" ClickMode="Hover"/>
+        <TextBox Name="Red" LostFocus="TextBox_LostFocus" PreviewKeyDown="TextBox_PreviewKeyDown" HorizontalAlignment="Left" Height="17" Margin="10,60,0,0" TextWrapping="Wrap" Text="100" VerticalAlignment="Top" Width="59" PreviewTextInput="textBox_PreviewTextInput"/>
+        <TextBox Name="Green" LostFocus="TextBox_LostFocus" PreviewKeyDown="TextBox_PreviewKeyDown" HorizontalAlignment="Left" Height="17" Margin="10,82,0,0" TextWrapping="Wrap" Text="100" VerticalAlignment="Top" Width="59" PreviewTextInput="textBox_PreviewTextInput" Cursor="AppStarting"/>
+        <TextBox Name="Blue" LostFocus="TextBox_LostFocus" PreviewKeyDown="TextBox_PreviewKeyDown" HorizontalAlignment="Left" Height="17" Margin="10,104,0,0" TextWrapping="Wrap" Text="100" VerticalAlignment="Top" Width="59" PreviewTextInput="textBox_PreviewTextInput"/>
+        <Rectangle Name="PickedColor" HorizontalAlignment="Left" Height="18" Margin="10,126,0,0" Stroke="Black" VerticalAlignment="Top" Width="59"/>
 
     </Grid>
 </Window>

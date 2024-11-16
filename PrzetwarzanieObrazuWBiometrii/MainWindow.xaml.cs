@@ -2,11 +2,15 @@
 using SixLabors.ImageSharp.PixelFormats;
 using System.IO;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml.Schema;
 
 namespace PrzetwarzanieObrazuWBiometrii
 {
@@ -22,9 +26,13 @@ namespace PrzetwarzanieObrazuWBiometrii
         public Image<Rgba32> BinarizedImage { get; private set; }
         public List<(int x, int y, Rgba32 rgba)> Pixels { get; private set; }
 
+        public Boolean fill;
+
+
         public MainWindow()
         {
             InitializeComponent();
+            fill = false;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -55,7 +63,31 @@ namespace PrzetwarzanieObrazuWBiometrii
 
         private void ImageDisplay_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            ;
+            System.Windows.Controls.Image image = sender as System.Windows.Controls.Image;
+
+            if (image != null)
+            {
+                System.Windows.Point clickPosition = e.GetPosition(image);
+
+                BitmapSource bitmapSource = image.Source as BitmapSource;
+                if (bitmapSource != null)
+                {
+                    double originalWidth = bitmapSource.PixelWidth;
+                    double originalHeight = bitmapSource.PixelHeight;
+
+
+                    double controlWidth = image.ActualWidth;
+                    double controlHeight = image.ActualHeight;
+
+                    double x = clickPosition.X * (originalWidth / controlWidth);
+                    double y = clickPosition.Y * (originalHeight / controlHeight);
+
+                    if (fill)
+                    {
+                        wypelnijProsty((int)x, (int)y);
+                    }
+                }
+            }
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -478,5 +510,84 @@ namespace PrzetwarzanieObrazuWBiometrii
         private void Button_Click_5(object sender, RoutedEventArgs e)
         {
         }
+
+        private void Button_Wypełnij(object sender, RoutedEventArgs e)
+        {
+            fill = !fill;
+
+            if (fill)
+            {
+                MessageBox.Show("Wypełniam");
+            }
+            else
+            {
+                MessageBox.Show("nie wypełniam");
+            }
+
+
+        }
+
+        private void TextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox textBox = sender as TextBox;
+            if (textBox != null)
+            {
+                if (int.TryParse(textBox.Text, out int value))
+                {
+                    if (value < 0)
+                    {
+                        textBox.Text = "0";
+                    }
+                    else if (value > 255)
+                    {
+                        textBox.Text = "255";
+                    }
+                }
+                else
+                {
+                    textBox.Text = "0";
+                }
+            }
+            Int32.TryParse(Red.Text, out int redC);
+            Int32.TryParse(Green.Text, out int greenC);
+            Int32.TryParse(Blue.Text, out int blueC);
+
+            PickedColor.Fill = new SolidColorBrush(System.Windows.Media.Color.FromRgb(((byte)redC), (byte)greenC, (byte)blueC));
+        }
+
+        private bool IsTextNumeric(string text)
+        {
+            // Używamy wyrażenia regularnego, aby sprawdzić, czy tekst zawiera tylko cyfry
+            Regex regex = new Regex("^[0-9]+$");
+            return regex.IsMatch(text);
+        }
+
+        private void TextBox_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            // Umożliwiamy używanie klawiszy takich jak Backspace, Delete, Tab, Left, Right
+            if (e.Key == Key.Back || e.Key == Key.Delete || e.Key == Key.Tab || e.Key == Key.Left || e.Key == Key.Right)
+            {
+                e.Handled = false;
+            }
+            // Zablokuj spację
+            else if (e.Key == Key.Space)
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void textBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = !IsTextNumeric(e.Text);
+        }
+
+        private void wypelnijProsty(int x, int y)
+        {
+            MessageBox.Show($"Kliknięto na pikselu: X={x}, Y={y}");
+
+            MessageBox.Show($"Obraz ma: X={SourceImage.Size.Width}, Y={SourceImage.Size.Height}");
+        }
+
+
     }
 }
