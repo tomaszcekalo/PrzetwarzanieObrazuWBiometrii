@@ -1,6 +1,7 @@
 ﻿using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -8,9 +9,11 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Media.Media3D;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml.Schema;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace PrzetwarzanieObrazuWBiometrii
 {
@@ -19,9 +22,8 @@ namespace PrzetwarzanieObrazuWBiometrii
     /// </summary>
     public partial class MainWindow : Window
     {
-        private Tresholding _tresholding = new Tresholding();
+        private Tresholding _tresholding;
         private NiblackSauvolaPhansalkar _niblack = new NiblackSauvolaPhansalkar();
-
         public Image<Rgba32> SourceImage { get; private set; }
         public Image<Rgba32> BinarizedImage { get; private set; }
         public List<(int x, int y, Rgba32 rgba)> Pixels { get; private set; }
@@ -92,6 +94,10 @@ namespace PrzetwarzanieObrazuWBiometrii
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
+            if(_tresholding is null)
+            {
+                _tresholding = new Tresholding();
+            }
             _tresholding.MainWindow = this;
             _tresholding.Show();
         }
@@ -106,7 +112,7 @@ namespace PrzetwarzanieObrazuWBiometrii
             {
                 for (int y = 0; y < image.Height; y++)
                 {
-                    if (SourceImage[x, y].R < Treshold)
+                    if (SourceImage[x, y].R <= Treshold)
                     {
                         image[x, y] = black;
                     }
@@ -409,6 +415,7 @@ namespace PrzetwarzanieObrazuWBiometrii
                         {
                             continue;
                         }
+                        #region neighbors assignment
                         int[] neighbors = new int[8];
                         // top
                         neighbors[0] = image[x, y - 1].R;
@@ -426,6 +433,7 @@ namespace PrzetwarzanieObrazuWBiometrii
                         neighbors[6] = image[x - 1, y].R;
                         // top left
                         neighbors[7] = image[x - 1, y - 1].R;
+                        #endregion
 
                         int transitions = 0;
                         for (int i = 0; i < 8; i++)
@@ -517,11 +525,11 @@ namespace PrzetwarzanieObrazuWBiometrii
 
             if (fill)
             {
-                MessageBox.Show("Wypełniam");
+                //MessageBox.Show("Wypełniam");
             }
             else
             {
-                MessageBox.Show("nie wypełniam");
+                //MessageBox.Show("nie wypełniam");
             }
 
 
@@ -585,9 +593,30 @@ namespace PrzetwarzanieObrazuWBiometrii
         {
             MessageBox.Show($"Kliknięto na pikselu: X={x}, Y={y}");
 
-            MessageBox.Show($"Obraz ma: X={SourceImage.Size.Width}, Y={SourceImage.Size.Height}");
+            MessageBox.Show($"Obraz ma: X={SourceImage.Width}, Y={SourceImage.Height}");
+        }
+        
+        private void K3mButton_Click(object sender, RoutedEventArgs e)
+        {
+            var image=new Skeletonization().K3M(BinarizedImage);
+            SaveImage(image, SkeletonizationImage);
+
         }
 
+        private void CrossingNumberButton_Click(object sender, RoutedEventArgs e)
+        {
+            var image = new FeatureExtraction().CrossingNumber(BinarizedImage);
+            SaveImage(image, SkeletonizationImage);
 
+        }
+        Zadanie5a _zadanie5a;   
+        private void Zadanie5a_Click(object sender, RoutedEventArgs e)
+        {
+            if(_zadanie5a is null)
+            {
+                _zadanie5a = new Zadanie5a();
+            }
+            _zadanie5a.Show();
+        }
     }
 }
