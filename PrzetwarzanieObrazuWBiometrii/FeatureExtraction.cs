@@ -78,9 +78,19 @@ namespace PrzetwarzanieObrazuWBiometrii
             }
             return true;
         }
-        public Image<Rgba32> CrossingNumber(in Image<Rgba32> bitmap)
+        public Image<Rgba32> DisplayCrossingNumber(in Image<Rgba32> bitmap)
         {
             var output = Copy(bitmap);
+            List<Minution> minution = CrossingNumber(bitmap);
+
+            foreach (var min in minution)
+            {
+                output[min.X, min.Y] = TypeToColor(min.Type);
+            }
+            return output;
+        }
+        public List<Minution> CrossingNumber(in Image<Rgba32> bitmap)
+        {
             List<Minution> minution = new List<Minution>();
 
             for (int x = 1; x < bitmap.Width - 1; ++x)
@@ -90,23 +100,19 @@ namespace PrzetwarzanieObrazuWBiometrii
                     if (bitmap[x, y].R == 0)
                     {
                         Minution min = Classify(bitmap, x, y);
-                        if (min.type == CrossType.Start ||
-                            min.type == CrossType.Bifurcation ||
-                            min.type == CrossType.Complex)
+                        if (min.Type == CrossType.Start ||
+                            min.Type == CrossType.Bifurcation ||
+                            min.Type == CrossType.Complex)
                         {
-                            if(ShoulAddMinutia(bitmap, x, y))
+                            if (ShoulAddMinutia(bitmap, x, y))
                                 minution.Add(min);
                         }
                     }
                 }
             }
-
-            foreach (var min in minution)
-            {
-                output[min.x, min.y] = TypeToColor(min.type);
-            }
-            return output;
+            return minution;
         }
+
 
         private Color TypeToColor(CrossType type)
         {
@@ -131,9 +137,9 @@ namespace PrzetwarzanieObrazuWBiometrii
         }
         public struct Minution
         {
-            public int x;
-            public int y;
-            public CrossType type;
+            public int X;
+            public int Y;
+            public CrossType Type;
         }
         public Minution Classify(Image<Rgba32> binaryImage, int x, int y)
         {
@@ -162,7 +168,7 @@ namespace PrzetwarzanieObrazuWBiometrii
                 default: throw new Exception("Not possible"); break;
             }
 
-            return new Minution { type = type, x = x, y = y };
+            return new Minution { Type = type, X = x, Y = y };
 
         }
     }

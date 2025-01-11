@@ -26,8 +26,12 @@ namespace PrzetwarzanieObrazuWBiometrii
         private NiblackSauvolaPhansalkar _niblack = new NiblackSauvolaPhansalkar();
         public Image<Rgba32> SourceImage { get; private set; }
         public Image<Rgba32> BinarizedImage { get; private set; }
+        public Image<Rgba32> SkeletonizedImage { get; private set; }
         public List<(int x, int y, Rgba32 rgba)> Pixels { get; private set; }
 
+        Zadanie5a _zadanie5a;
+        private Zadanie6 _zadanie6;
+        private FeatureExtraction _featureExtraction;
         public Boolean fill;
 
 
@@ -35,6 +39,7 @@ namespace PrzetwarzanieObrazuWBiometrii
         {
             InitializeComponent();
             fill = false;
+            _featureExtraction=new FeatureExtraction();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -512,6 +517,7 @@ namespace PrzetwarzanieObrazuWBiometrii
                 }
             }
             while (changed > 0);
+            SkeletonizedImage = image;
             SaveImage(image, SkeletonizationImage);
         }
 
@@ -598,25 +604,34 @@ namespace PrzetwarzanieObrazuWBiometrii
         
         private void K3mButton_Click(object sender, RoutedEventArgs e)
         {
-            var image=new Skeletonization().K3M(BinarizedImage);
-            SaveImage(image, SkeletonizationImage);
+            SkeletonizedImage=new Skeletonization().K3M(BinarizedImage);
+            SaveImage(SkeletonizedImage, SkeletonizationImage);
 
         }
 
         private void CrossingNumberButton_Click(object sender, RoutedEventArgs e)
         {
-            var image = new FeatureExtraction().CrossingNumber(BinarizedImage);
+            var image = _featureExtraction.DisplayCrossingNumber(BinarizedImage);
             SaveImage(image, SkeletonizationImage);
 
         }
-        Zadanie5a _zadanie5a;   
+
         private void Zadanie5a_Click(object sender, RoutedEventArgs e)
         {
             if(_zadanie5a is null)
             {
                 _zadanie5a = new Zadanie5a();
+                _zadanie5a.Show();
             }
-            _zadanie5a.Show();
+        }
+
+        private void Zadanie6Button_Click(object sender, RoutedEventArgs e)
+        {
+            if(_zadanie6 is null)
+            {
+                _zadanie6 = new Zadanie6(_featureExtraction, SkeletonizedImage);
+                _zadanie6.Show();
+            }
         }
     }
 }

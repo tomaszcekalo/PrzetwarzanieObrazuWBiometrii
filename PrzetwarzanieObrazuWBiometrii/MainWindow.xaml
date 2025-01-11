@@ -39,6 +39,7 @@
         <Button Content="K3M" Name="K3mButton" HorizontalAlignment="Left" Margin="629,10,0,0" VerticalAlignment="Top" Width="34" Click="K3mButton_Click"/>
         <Button Name="CrossingNumberButton" Content="Crossing Number" HorizontalAlignment="Left" Margin="668,10,0,0" VerticalAlignment="Top" Click="CrossingNumberButton_Click"/>
         <Button Name="Zadanie5a" Content="Zadanie 5a" HorizontalAlignment="Left" Margin="769,10,0,0" VerticalAlignment="Top" Click="Zadanie5a_Click"/>
+        <Button x:Name="Zadanie6Button" Content="Zadanie 6" HorizontalAlignment="Left" Margin="836,10,0,0" VerticalAlignment="Top" Click="Zadanie6Button_Click"/>
 
     </Grid>
 </Window>
